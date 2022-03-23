@@ -1,5 +1,4 @@
 module.exports = {
-
   title: '人力资源管理平台',
 
   /**
@@ -12,5 +11,5 @@ module.exports = {
    * @type {boolean} true | false
    * @description Whether show the logo in sidebar
    */
-  sidebarLogo: true
+  sidebarLogo: true, // 显示logo
 }

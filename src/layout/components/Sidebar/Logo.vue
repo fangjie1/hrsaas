@@ -17,6 +17,7 @@
 export default {
   name: 'SidebarLogo',
   props: {
+    // collapse为是否折叠菜单栏
     collapse: {
       type: Boolean,
       required: true
@@ -46,14 +47,14 @@ export default {
   width: 100%;
   height: 50px;
   line-height: 50px;
-  // background: #2b2f3a;
+  // background: #2b2f3a;去掉logo背景色
   text-align: center;
   overflow: hidden;
 
   & .sidebar-logo-link {
     height: 100%;
     width: 100%;
-
+    // 大图样式
     & .sidebar-logo {
       width: 140px;
       vertical-align: middle;
@@ -71,7 +72,7 @@ export default {
       vertical-align: middle;
     }
   }
-
+  // 设置小图样式
   &.collapse {
     .sidebar-logo {
       margin-right: 0px;

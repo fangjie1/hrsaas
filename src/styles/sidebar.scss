@@ -1,3 +1,4 @@
+// 控制侧边栏样样式
 #app {
   .main-container {
     min-height: 100%;
@@ -62,7 +63,7 @@
       margin-right: 12px;
       margin-left: -2px;
     }
-
+    // 控制左侧菜单栏中的每一项样式
     .el-menu {
       border: none;
       height: 100%;
@@ -73,9 +74,9 @@
             color: #fff;
             font-size: 18px;
             vertical-align: middle;
-            .icon {
-              color: #fff;
-            }
+            // .icon {
+            //   color: #fff;
+            // }
           }
           span {
             color: #fff;

@@ -5,8 +5,11 @@ import NProgress from 'nprogress' // 引入一份进度条插件
 import 'nprogress/nprogress.css' // 引入进度条样式
 
 const whiteList = ['/login', '/404'] // 定义白名单  所有不受权限控制的页面
-// 路由的前置守卫
-router.beforeEach(async function(to, from, next) {
+
+// 权限拦截流程
+// 1.判断是否有token,如果有，判断是否是去登录页，如果是则跳到主页，如果不是则判断是否有用户信息，如果有直接放行，没有则去获取用户信息，再放行。
+// 2.如果没有token，判断跳转路由是否在白名单上，如果不在则直接跳到登录页，如果在直接放行
+router.beforeEach(async function (to, from, next) {
   NProgress.start() // 开启进度条
   //  首先判断有无token
   if (store.getters.token) {
@@ -18,10 +21,16 @@ router.beforeEach(async function(to, from, next) {
       if (!store.getters.userId) {
         // 没有用户id,则去获取用户资料
         const { roles } = await store.dispatch('user/getUserInfo')
-        console.log(roles.menus);
-        const routes = await store.dispatch('permission/filterRoutes', roles.menus)
+        console.log(roles.menus)
+        const routes = await store.dispatch(
+          'permission/filterRoutes',
+          roles.menus,
+        )
         // 404页面必须添加到路由最后
-        router.addRoutes([...routes, { path: '*', redirect: '/404', hidden: true }])
+        router.addRoutes([
+          ...routes,
+          { path: '*', redirect: '/404', hidden: true },
+        ])
         next(to.path)
       } else {
         next() // 直接放行
@@ -39,6 +48,6 @@ router.beforeEach(async function(to, from, next) {
   NProgress.done() // 手动强制关闭一次  为了解决 手动切换地址时  进度条的不关闭的问题
 })
 // 后置守卫
-router.afterEach(function() {
+router.afterEach(function () {
   NProgress.done() // 关闭进度条
 })

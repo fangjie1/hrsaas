@@ -22,20 +22,20 @@ if (isProd) {
   // 如果是生产环境 就排除打包 否则不排除
   externals = {
     // key(包名) / value(这个值 是 需要在CDN中获取js, 相当于 获取的js中 的该包的全局的对象的名字)
-    'vue': 'Vue', // 后面的名字不能随便起 应该是 js中的全局对象名
+    vue: 'Vue', // 后面的名字不能随便起 应该是 js中的全局对象名
     'element-ui': 'ELEMENT', // 都是js中全局定义的
-    'xlsx': 'XLSX' // 都是js中全局定义的
+    xlsx: 'XLSX', // 都是js中全局定义的
   }
   cdn = {
     css: [
-      'https://unpkg.com/element-ui/lib/theme-chalk/index.css' // 提前引入elementUI样式
+      'https://unpkg.com/element-ui/lib/theme-chalk/index.css', // 提前引入elementUI样式
     ], // 放置css文件目录
     js: [
       'https://cdn.jsdelivr.net/npm/vue@2.6.14', // vuejs
       'https://unpkg.com/element-ui/lib/index.js', // element
       'https://cdn.jsdelivr.net/npm/xlsx@0.16.6/dist/xlsx.full.min.js', // xlsx 相关
-      'https://cdn.jsdelivr.net/npm/xlsx@0.16.6/dist/jszip.min.js' // xlsx 相关
-    ] // 放置js文件目录
+      'https://cdn.jsdelivr.net/npm/xlsx@0.16.6/dist/jszip.min.js', // xlsx 相关
+    ], // 放置js文件目录
   }
 }
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
@@ -57,7 +57,7 @@ module.exports = {
     open: true,
     overlay: {
       warnings: false,
-      errors: true
+      errors: true,
     },
     // 配置反向代理
     proxy: {
@@ -65,12 +65,12 @@ module.exports = {
       '/api': {
         // target: 'http://ihrm-java.itheima.net/', // 跨域请求的地址
         target: 'http://ihrm-java.itheima.net/', // 跨域请求的地址
-        changeOrigin: true // 只有这个值为true的情况下 才表示开启跨域
+        changeOrigin: true, // 只有这个值为true的情况下 才表示开启跨域
         //   pathRewrite: {
         //   '^/api': '' //  localhost:8888/api/login 变成www.baidu.com/login 就需要这么做
         // }
-      }
-    }
+      },
+    },
     // before: require('./mock/mock-server.js')
   },
   configureWebpack: {
@@ -79,10 +79,10 @@ module.exports = {
     name: name,
     resolve: {
       alias: {
-        '@': resolve('src')
-      }
+        '@': resolve('src'),
+      },
     },
-    externals
+    externals,
   },
   chainWebpack(config) {
     // it can improve the speed of the first screen, it is recommended to turn on preload
@@ -92,8 +92,8 @@ module.exports = {
         // to ignore runtime.js
         // https://github.com/vuejs/vue-cli/blob/dev/packages/@vue/cli-service/lib/config/app.js#L171
         fileBlacklist: [/\.map$/, /hot-update\.js$/, /runtime\..*\.js$/],
-        include: 'initial'
-      }
+        include: 'initial',
+      },
     ])
     config.plugin('html').tap((args) => {
       args[0].cdn = cdn
@@ -103,10 +103,7 @@ module.exports = {
     config.plugins.delete('prefetch')
 
     // set svg-sprite-loader
-    config.module
-      .rule('svg')
-      .exclude.add(resolve('src/icons'))
-      .end()
+    config.module.rule('svg').exclude.add(resolve('src/icons')).end()
     config.module
       .rule('icons')
       .test(/\.svg$/)
@@ -115,48 +112,46 @@ module.exports = {
       .use('svg-sprite-loader')
       .loader('svg-sprite-loader')
       .options({
-        symbolId: 'icon-[name]'
+        symbolId: 'icon-[name]',
       })
       .end()
 
-    config
-      .when(process.env.NODE_ENV !== 'development',
-        config => {
-          config
-            .plugin('ScriptExtHtmlWebpackPlugin')
-            .after('html')
-            .use('script-ext-html-webpack-plugin', [{
+    config.when(process.env.NODE_ENV !== 'development', (config) => {
+      config
+        .plugin('ScriptExtHtmlWebpackPlugin')
+        .after('html')
+        .use('script-ext-html-webpack-plugin', [
+          {
             // `runtime` must same as runtimeChunk name. default is `runtime`
-              inline: /runtime\..*\.js$/
-            }])
-            .end()
-          config
-            .optimization.splitChunks({
-              chunks: 'all',
-              cacheGroups: {
-                libs: {
-                  name: 'chunk-libs',
-                  test: /[\\/]node_modules[\\/]/,
-                  priority: 10,
-                  chunks: 'initial' // only package third parties that are initially dependent
-                },
-                elementUI: {
-                  name: 'chunk-elementUI', // split elementUI into a single package
-                  priority: 20, // the weight needs to be larger than libs and app or it will be packaged into libs or app
-                  test: /[\\/]node_modules[\\/]_?element-ui(.*)/ // in order to adapt to cnpm
-                },
-                commons: {
-                  name: 'chunk-commons',
-                  test: resolve('src/components'), // can customize your rules
-                  minChunks: 3, //  minimum common number
-                  priority: 5,
-                  reuseExistingChunk: true
-                }
-              }
-            })
-          // https:// webpack.js.org/configuration/optimization/#optimizationruntimechunk
-          config.optimization.runtimeChunk('single')
-        }
-      )
-  }
+            inline: /runtime\..*\.js$/,
+          },
+        ])
+        .end()
+      config.optimization.splitChunks({
+        chunks: 'all',
+        cacheGroups: {
+          libs: {
+            name: 'chunk-libs',
+            test: /[\\/]node_modules[\\/]/,
+            priority: 10,
+            chunks: 'initial', // only package third parties that are initially dependent
+          },
+          elementUI: {
+            name: 'chunk-elementUI', // split elementUI into a single package
+            priority: 20, // the weight needs to be larger than libs and app or it will be packaged into libs or app
+            test: /[\\/]node_modules[\\/]_?element-ui(.*)/, // in order to adapt to cnpm
+          },
+          commons: {
+            name: 'chunk-commons',
+            test: resolve('src/components'), // can customize your rules
+            minChunks: 3, //  minimum common number
+            priority: 5,
+            reuseExistingChunk: true,
+          },
+        },
+      })
+      // https:// webpack.js.org/configuration/optimization/#optimizationruntimechunk
+      config.optimization.runtimeChunk('single')
+    })
+  },
 }

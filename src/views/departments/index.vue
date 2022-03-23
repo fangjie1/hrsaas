@@ -3,23 +3,23 @@
        class="dashboard-container">
     <div class="app-container">
       <el-card class="tree-card">
-        <TreeTools :treeNode="company"
-                   :isRoot="true"
-                   @addDept="addDept"></TreeTools>
+        <TreeTools :tree-node="company"
+                   :is-root="true"
+                   @addDept="addDept" />
         <el-tree :data="departs"
                  :props="defaultProps"
                  :default-expand-all="true">
           <TreeTools slot-scope="{data}"
-                     :treeNode="data"
+                     :tree-node="data"
                      @delDept="getDepartments"
                      @addDept="addDept"
-                     @editDept="editDept"></TreeTools>
+                     @editDept="editDept" />
         </el-tree>
       </el-card>
     </div>
     <AddDept ref="addDept"
-             :showDialog.sync="showDialog"
-             :treeNode="node"
+             :show-dialog.sync="showDialog"
+             :tree-node="node"
              @addDept="getDepartments" />
   </div>
 </template>
@@ -56,7 +56,7 @@ export default {
     async getDepartments () {
       this.loading = true
       const result = await getDepartments()
-      this.company = { name: result.companyName, manager: '负责人', id: '' }
+      this.company = { name: '我心永恒科技股份有限公司', manager: '负责人', id: '' }
       this.departs = transListToTreeData(result.depts, '')
       this.loading = false
     },

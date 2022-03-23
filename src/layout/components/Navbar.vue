@@ -1,27 +1,26 @@
 <template>
   <div class="navbar">
     <div class="app-breadcrumb">
-      江苏传智播客教育科技股份有限公司
-      <span class="breadBtn">体验版</span>
+      我心永恒科技股份有限公司
+      <!-- <span class="breadBtn">体验版</span> -->
     </div>
     <hamburger :is-active="sidebar.opened"
                class="hamburger-container"
                @toggleClick="toggleSideBar" />
-
-    <!-- <breadcrumb class="breadcrumb-container" /> -->
 
     <div class="right-menu">
       <lang class="right-menu-item" />
       <ScreenFull class="right-menu-item" />
       <!-- 放置全屏插件 -->
       <theme-picker class="right-menu-item" />
+      <!-- 右侧下拉菜单设置 -->
       <el-dropdown class="avatar-container"
                    trigger="click">
         <div class="avatar-wrapper">
-          <img v-imagerror='defaultImg'
+          <img v-imagerror="defaultImg"
                :src="staffPhoto"
                class="user-avatar">
-          <span class="name">{{name}}</span>
+          <span class="name">{{ name }}</span>
           <i class="el-icon-caret-bottom"
              style="color:#fff" />
         </div>
@@ -60,7 +59,7 @@ export default {
   },
   data () {
     return {
-      defaultImg: require('@/assets/common/head.jpg'),
+      defaultImg: require('@/assets/common/head.jpg')
     }
   },
   computed: {
@@ -70,7 +69,7 @@ export default {
       'staffPhoto'
     ])
   },
- 
+
   methods: {
     toggleSideBar () {
       this.$store.dispatch('app/toggleSideBar')
@@ -109,6 +108,7 @@ export default {
       margin-left: 15px;
     }
   }
+  // 汉堡按钮样式
   .hamburger-container {
     line-height: 46px;
     height: 100%;
@@ -116,7 +116,6 @@ export default {
     cursor: pointer;
     transition: background 0.3s;
     -webkit-tap-highlight-color: transparent;
-
     &:hover {
       background: rgba(0, 0, 0, 0.025);
     }
@@ -152,21 +151,14 @@ export default {
         }
       }
     }
-    .name {
-      color: #fff;
-      vertical-align: middle;
-      margin-left: 5px;
-    }
-    .user-dropdown {
-      color: #fff;
-    }
+
     .avatar-container {
       margin-right: 30px;
-
       .avatar-wrapper {
         margin-top: 5px;
+        padding: 0 8px;
         position: relative;
-
+        // 头像和下拉菜单样式
         .user-avatar {
           cursor: pointer;
           width: 30px;
@@ -178,10 +170,18 @@ export default {
         .el-icon-caret-bottom {
           cursor: pointer;
           position: absolute;
-          right: -20px;
+          right: -10px;
           top: 25px;
           font-size: 12px;
         }
+      }
+      .name {
+        color: #fff;
+        vertical-align: middle;
+        margin-left: 5px;
+      }
+      .user-dropdown {
+        color: #fff;
       }
     }
   }

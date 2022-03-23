@@ -151,7 +151,7 @@
 </template>
 
 <script>
-import { getRoleList, getCompanyInfo, deleteRole, updateRole, getRoleDetail, addRole, assignPerm } from '@/api/setting'
+import { getRoleList, deleteRole, updateRole, getRoleDetail, addRole, assignPerm } from '@/api/setting'
 import { getPermissionList } from '@/api/permission'
 import { transListToTreeData } from '@/utils'
 import { mapGetters } from 'vuex'
@@ -171,6 +171,7 @@ export default {
       },
       formData: {
         // 公司信息
+        name: '我心永恒科技股份有限公司'
       },
       showDialog: false,
       roleForm: {
@@ -192,7 +193,7 @@ export default {
   },
   created () {
     this.getRoleList()
-    this.getCompanyInfo()
+    // this.getCompanyInfo()
   },
   methods: {
     // 获取所有角色
@@ -209,9 +210,9 @@ export default {
       this.page.page = newPage
       this.getRoleList()
     },
-    async getCompanyInfo () {
-      this.formData = await getCompanyInfo(this.companyId)
-    },
+    // async getCompanyInfo () {
+    //   this.formData = await getCompanyInfo(this.companyId)
+    // },
     // 删除角色
     async deleteRole (id) {
       try {
